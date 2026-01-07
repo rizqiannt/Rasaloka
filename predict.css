@@ -1,0 +1,292 @@
+/* Impor font Poppins dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+/* Styling utama */
+body {
+    font-family: 'Poppins', sans-serif !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #FFF9E6 !important;
+    color: #333 !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Kontainer utama */
+.main-container {
+    background-color: #ffffff !important;
+    border: 1px solid #C8E6C9 !important;
+    border-radius: 12px !important;
+    padding: 40px !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    max-width: 800px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+}
+
+/* Judul */
+.main-container h1 {
+    color: #FFC107 !important;
+    font-weight: 700 !important;
+    font-size: 2.5rem !important;
+    margin-bottom: 10px !important;
+}
+
+/* Subjudul */
+.subtitle {
+    text-align: center !important;
+    color: #666 !important;
+    font-size: 1.2rem !important;
+    margin-bottom: 30px !important;
+    font-weight: 400 !important;
+    max-width: 600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Camera Container */
+.camera-container {
+    position: relative;
+    max-width: 100%;
+    margin: 20px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    background: #000;
+}
+
+.camera-preview {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+}
+
+/* Gallery Icon */
+.gallery-icon {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: #FFC107;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.gallery-icon:hover {
+    background-color: #ffffff;
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Prediction Details */
+.prediction-details {
+    margin-top: 30px;
+}
+
+.result-card {
+    background-color: #C8E6C9 !important;
+    border: 1px solid #4CAF50 !important;
+    border-radius: 10px !important;
+    padding: 25px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    text-align: center !important;
+}
+
+.result-card p {
+    margin: 10px 0 !important;
+    font-size: 1.2rem !important;
+    color: #333 !important;
+}
+
+.result-card strong {
+    color: #FFC107 !important;
+    font-weight: 500 !important;
+}
+
+/* Error */
+.error {
+    background-color: #FFCDD2 !important;
+    border: 1px solid #EF9A9A !important;
+    border-radius: 8px !important;
+    color: #D32F2F !important;
+    max-width: 500px !important;
+    margin: 20px auto !important;
+    padding: 12px !important;
+    text-align: center !important;
+    font-size: 1rem;
+}
+
+/* Responsivitas */
+@media (max-width: 600px) {
+    .main-container {
+        padding: 20px !important;
+    }
+    .main-container h1 {
+        font-size: 2rem !important;
+    }
+    .subtitle {
+        font-size: 1rem !important;
+    }
+    .gallery-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+    .result-card p {
+        font-size: 1rem !important;
+    }
+}
+
+/* Tombol Prediksi Sekarang */
+.predict-now-button {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #FFC107 !important;
+    color: white !important;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    transition: all 0.3s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.predict-now-button:hover:not(:disabled) {
+    background-color: #FFB300 !important;
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 193, 7, 0.5);
+}
+
+.predict-now-button:disabled {
+    background-color: #ccc !important;
+    cursor: not-allowed;
+    transform: translateX(-50%);
+}
+
+.predict-now-button i {
+    font-size: 1.1rem;
+}
+
+/* Responsif */
+@media (max-width: 600px) {
+    .predict-now-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tombol Ganti Gambar */
+.action-button.replace-button {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-button.replace-button:hover {
+    background-color: #45a049 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+.action-button.replace-button i {
+    font-size: 1rem;
+}
+
+/* Container Tombol Aksi */
+#image-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+/* Tombol Aksi (Ganti & Hapus) */
+.action-button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.action-button i {
+    font-size: 1rem;
+}
+
+/* Ganti Gambar */
+.replace-button {
+    background-color: #4CAF50 !important;
+    color: white !important;
+}
+
+.replace-button:hover {
+    background-color: #45a049 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+/* Hapus Gambar */
+.delete-button {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+/* Responsif */
+@media (max-width: 600px) {
+    #image-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .action-button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+}
+

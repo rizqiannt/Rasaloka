@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RASALOKA - Landing Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="landing-page">
+        <a href="{{ url_for('admin.login') }}" class="admin-login-btn">
+            <i class="fas fa-user-shield"></i> Admin
+        </a>
+        <div class="intro-container">
+            <h1 class="animated-title">RASALOKA</h1>
+            <p class="intro-text">
+                RASALOKA adalah platform inovatif yang memanfaatkan kecerdasan buatan untuk mengenali dan melestarikan
+                kekayaan kuliner khas Indonesia. Dengan mengunggah gambar, Anda dapat menjelajahi nama makanan, asal
+                daerahnya, dan tingkat akurasi prediksi secara instan—semua dalam satu klik!
+            </p>
+        </div>
+
+        <div class="features-container">
+            <div class="feature-card">
+                <i class="fas fa-camera"></i>
+                <h3>Pengenalan Citra</h3>
+                <p>
+                    Unggah gambar makanan apa saja, dan biarkan AI kami mengidentifikasi hidangan khas Indonesia dengan
+                    cepat dan akurat—dari rendang hingga pempek!
+                </p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Informasi Daerah</h3>
+                <p>
+                    Temukan asal daerah setiap makanan untuk mendukung wisata kuliner lokal, seperti gudeg dari
+                    Yogyakarta atau ayam betutu dari Bali.
+                </p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Akurasi Tinggi</h3>
+                <p>
+                    Nikmati prediksi dengan tingkat akurasi tinggi berkat teknologi AI mutakhir yang terus dilatih
+                    dengan dataset kuliner Indonesia.
+                </p>
+            </div>
+        </div>
+
+        <a href="{{ url_for('predict') }}" class="start-button">Mulai Prediksi Sekarang</a>
+    </div>
+
+    <style>
+        /* Animasi untuk judul */
+        .animated-title {
+            animation: bounceIn 1.5s ease-out;
+        }
+
+        /* Animasi bounce */
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Efek hover pada feature-card */
+        .feature-card:hover i {
+            color: #FFB300;
+            transform: rotate(15deg);
+            transition: all 0.3s ease;
+        }
+
+        /* Admin Button Style */
+        .admin-login-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .admin-login-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #000;
+        }
+    </style>
+</body>
+
+</html>

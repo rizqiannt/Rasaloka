@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RASALOKA - Dashboard</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-utensils"></i> Admin</h2>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="showSection('dashboard-section', this)">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('train-model-section', this)">
+                        <i class="fas fa-dumbbell"></i> Train Model
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('history-section', this)">
+                        <i class="fas fa-history"></i> History
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <li class="nav-item" style="list-style: none;">
+                    <a href="{{ url_for('admin.logout') }}" class="nav-link" style="color: #ef4444;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main id="content">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <!-- SECTION: Dashboard Home -->
+            <div id="dashboard-section" class="content-section active">
+                <h1 class="section-header">Admin Dashboard</h1>
+                <div class="dashboard-card">
+                    <h2>System Status</h2>
+                    <div id="status-badge" class="status-badge" style="margin-top: 10px;">Checking status...</div>
+                    <p style="margin-top: 1rem; color: #666;">Welcome back, Admin. Select an option from the sidebar to
+                        manage your models.</p>
+                </div>
+
+                <!-- Quick Stats or Latest Report Summary could go here -->
+                {% if logs and logs[0].classification_report %}
+                <div class="dashboard-card">
+                    <h3>Latest Performance</h3>
+                    <p><strong>Accuracy:</strong> {{ "%.2f"|format(logs[0].classification_report['accuracy'] * 100) }}%
+                    </p>
+                    <p><strong>Last Training:</strong> {{ logs[0].date }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- SECTION: Train Model (Upload + Config) -->
+            <div id="train-model-section" class="content-section">
+                <h1 class="section-header">Train Model</h1>
+
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-upload"></i> Upload New Data</h3>
+                    <p>Add new images to the training dataset.</p>
+                    <form method="POST" action="{{ url_for('admin.upload_data') }}" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>Food Class Name</label>
+                            <input type="text" class="form-control" name="class_name" required
+                                placeholder="e.g. rendang">
+                        </div>
+                        <div class="form-group">
+                            <label>Image File</label>
+                            <input type="file" class="form-control" name="file" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-cogs"></i> Fine-Tune Model</h3>
+                    <p>Start the training process based on current dataset.</p>
+                    <form method="POST" action="{{ url_for('admin.train') }}">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label>Epochs</label>
+                                <input type="number" class="form-control" name="epochs" value="15" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Learning Rate</label>
+                                <input type="text" class="form-control" name="learning_rate" value="0.00001">
+                            </div>
+                        </div>
+                        <button type="submit" id="train-btn" class="btn btn-primary">Start Training</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- SECTION: Training History -->
+            <div id="history-section" class="content-section">
+                <h1 class="section-header">Training History</h1>
+
+                {% if logs %}
+                <div class="dashboard-card">
+                    <h3>Run Log</h3>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Epochs</th>
+                                    <th>LR</th>
+                                    <th>Acc</th>
+                                    <th>Loss</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for log in logs %}
+                                <tr>
+                                    <td>{{ log.date }}</td>
+                                    <td>{{ log.epochs }}</td>
+                                    <td>{{ log.learning_rate }}</td>
+                                    <td>{{ log.accuracy }}</td>
+                                    <td>{{ log.loss }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Latest Classification Report</h3>
+                    {% set latest_log = logs[0] %}
+                    {% if latest_log.classification_report %}
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        {% for class_name, metrics in latest_log.classification_report.items() %}
+                        {% if class_name not in ['accuracy', 'macro avg', 'weighted avg'] %}
+                        <div style="background: #fcfcfc; padding: 10px; border: 1px solid #eee; border-radius: 6px;">
+                            <h4 style="margin: 0 0 5px 0; color: #FFC107;">{{ class_name }}</h4>
+                            <div style="font-size: 0.8rem;">
+                                <div>Precision: {{ "%.2f"|format(metrics['precision']) }}</div>
+                                <div>Recall: {{ "%.2f"|format(metrics['recall']) }}</div>
+                                <div>F1: {{ "%.2f"|format(metrics['f1-score']) }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <p>No history available.</p>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Section Switching Logic
+        function showSection(sectionId, linkElement) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+            // Remove active class from all links
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            // Add active class to clicked link
+            if (linkElement) linkElement.classList.add('active');
+
+            // Save state (optional)
+            localStorage.setItem('activeAdminSection', sectionId);
+        }
+
+        // Restore active section on load
+        window.onload = function () {
+            checkStatus(); // Start status polling
+
+            const activeSection = localStorage.getItem('activeAdminSection');
+            if (activeSection) {
+                const link = document.querySelector(`a[onclick*="${activeSection}"]`);
+                if (link) showSection(activeSection, link);
+            }
+        };
+
+        function checkStatus() {
+            fetch("{{ url_for('admin.status') }}")
+                .then(response => response.json())
+                .then(data => {
+                    const statusBadge = document.getElementById('status-badge');
+                    const trainBtn = document.getElementById('train-btn');
+
+                    if (data.is_training) {
+                        if (statusBadge) {
+                            statusBadge.innerText = 'Training in Progress...';
+                            statusBadge.className = 'status-badge status-active';
+                        }
+                        if (trainBtn) {
+                            trainBtn.disabled = true;
+                            trainBtn.innerText = 'Training...';
+                        }
+                    } else {
+                        if (statusBadge) {
+                            statusBadge.innerText = 'System Ready';
+                            statusBadge.className = 'status-badge';
+                        }
+                        if (trainBtn) {
+                            trainBtn.disabled = false;
+                            trainBtn.innerText = 'Start Training';
+                        }
+                    }
+                });
+        }
+        setInterval(checkStatus, 5000);
+    </script>
+</body>
+
+</html>
